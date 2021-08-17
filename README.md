@@ -1,2 +1,3 @@
 # python-blueprint
-Bootstrap for python stuff
+
+My bootstrap for python stuff
