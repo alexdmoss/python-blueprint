@@ -9,5 +9,5 @@ with open('./logging.json') as file:
 log = logging.getLogger(__name__)
 
 
-def app():
-    log.info("Hello world")
+def app(first_name: str = "World"):
+    log.info(f"Hello {first_name}")
