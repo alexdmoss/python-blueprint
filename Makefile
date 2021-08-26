@@ -1,6 +1,14 @@
-.PHONY: run test lint clean
+APP := blueprint
+VERSION := $(shell git describe --tags --always)
+MAINTAINER := $(shell git log -1 --pretty=format:'%ae')
+# can use to set registry, e.g. make build IMAGE=your/fq/image
+IMAGE ?= $(APP)
 
-run:
+
+.PHONY: run test lint clean docker-build docker-run
+.DEFAULT_GOAL := run
+
+run: lint test
 	@poetry run blueprint
 
 test:
@@ -14,3 +22,22 @@ lint:
 
 clean:
 	rm -rf .pytest_cache .coverage blueprint/__pycache__ tests/__pycache__
+
+docker-build:
+	@echo "Building Docker image with labels:"
+	@echo "Name        : $(APP)"
+	@echo "Version     : $(VERSION)"
+	@echo "Maintainer  : $(MAINTAINER)"
+	@echo "Image       : $(IMAGE):$(VERSION)"
+	@sed -e 's|{NAME}|$(APP)|g' \
+	     -e 's|{MAINTAINER}|$(MAINTAINER)|g' \
+		 -e 's|{VERSION}|$(VERSION)|g' Dockerfile | \
+ 		 docker build -t $(IMAGE):$(VERSION) -f- .
+	@docker tag $(IMAGE):$(VERSION) $(IMAGE):latest
+
+docker-run:
+	@echo "Launching shell in $(IMAGE):$(VERSION) container ..."
+	@docker run -it --rm                                            \
+		--entrypoint /bin/bash                                      \
+		--name $(APP)                                               \
+		$(IMAGE):$(VERSION)
