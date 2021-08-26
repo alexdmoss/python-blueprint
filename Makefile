@@ -11,7 +11,7 @@ IMAGE ?= $(APP)
 run: lint test
 	@poetry run blueprint
 
-test:
+test: lint
 	@poetry run pytest
 
 lint:
@@ -35,7 +35,7 @@ docker-build:
  		 docker build -t $(IMAGE):$(VERSION) -f- .
 	@docker tag $(IMAGE):$(VERSION) $(IMAGE):latest
 
-docker-run:
+docker-run: docker-build
 	@echo "Launching shell in $(IMAGE):$(VERSION) container ..."
 	@docker run -it --rm                                            \
 		--entrypoint /bin/bash                                      \
