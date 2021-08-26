@@ -12,5 +12,6 @@ Makefile is available for convenience. Some particular options:
 
 - `make docker-build` will build the docker image using the APP name by default, but can be overridden with e.g. `make docker-build IMAGE=eu.gcr.io/your-gcp-project/app`
 - `make docker-run` is there for convenience - rebuilding the docker image and then running it with a bash shell entrypoint
+- `make scan` runs a trivy image vulnerability scan of the rebuilt container image. Assumes trivy is installed
 
 When building the docker image, note that it picks the latest git-sha as the version unless you specify otherwise (or use a git tag), and the last commit email address as the maintainer to label in the image.

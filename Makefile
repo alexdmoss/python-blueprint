@@ -41,3 +41,7 @@ docker-run: docker-build
 		--entrypoint /bin/bash                                      \
 		--name $(APP)                                               \
 		$(IMAGE):$(VERSION)
+
+scan: docker-build
+	@echo "Running trivy scan of $(IMAGE):$(VERSION) container ..."
+	@trivy image --severity=HIGH,CRITICAL $(IMAGE):$(VERSION)
