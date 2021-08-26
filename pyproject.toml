@@ -5,7 +5,7 @@ description = "Description goes here"
 authors = ["Alex M <alex@mosstech.io>"]
 
 [tool.poetry.scripts]
-blueprint = "blueprint.main:app"
+blueprint = "blueprint.app:app"
 
 [tool.poetry.dependencies]
 python = "^3.9"
